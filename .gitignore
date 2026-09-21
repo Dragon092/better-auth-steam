@@ -1,0 +1,54 @@
+# === Logs ===
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# === Dependency directories ===
+node_modules/
+jspm_packages/
+web_modules/
+
+# === TypeScript and Build Outputs ===
+# Dist and build folders
+dist/
+build/
+out/
+/lib
+
+# TypeScript build info and cached files
+*.tsbuildinfo
+.tscache/
+
+# Compiled JavaScript files (Uncomment if you emit JS next to TS files)
+# *.js
+# *.d.ts
+# *.map
+
+# === Diagnostic and Coverage Output ===
+coverage/
+*.lcov
+.nyc_output/
+
+# === IDEs and Editors ===
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# === Operating System Files ===
+.DS_Store
+Thumbs.db
+
+# === Runtime Environments ===
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
