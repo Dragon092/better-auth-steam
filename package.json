@@ -19,8 +19,7 @@
   },
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch",
-    "prepare": "pnpm build"
+    "dev": "tsup --watch"
   },
   "keywords": [
     "better-auth",
