@@ -14,7 +14,7 @@ web_modules/
 
 # === TypeScript and Build Outputs ===
 # Dist and build folders
-dist/
+#dist/
 build/
 out/
 /lib
