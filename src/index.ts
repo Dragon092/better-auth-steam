@@ -103,7 +103,8 @@ export const steam = (config: SteamAuthPluginOptions) =>
 					body: z.object({
 						email: z
 							.string()
-							.meta({ description: "The email to use for the user" }),
+							.meta({ description: "The email to use for the user" })
+							.optional(),
 						errorCallbackURL: z
 							.string()
 							.meta({
@@ -142,7 +143,7 @@ export const steam = (config: SteamAuthPluginOptions) =>
 					).origin;
 					const callbackURL =
 						ctx.body.callbackURL || new URL("/", frontendOrigin).toString();
-					const email = ctx.body.email;
+					const email = ctx.body.email || "";
 					const errorCallbackURL = ctx.body.errorCallbackURL
 						? new URL(ctx.body.errorCallbackURL, frontendOrigin).toString()
 						: undefined;
@@ -474,14 +475,9 @@ export const steam = (config: SteamAuthPluginOptions) =>
 					}
 
 					// Regular sign-in flow
-					if (!email) {
-						ctx.context.logger.error(
-							`Email is required for sign in with steam`,
-						);
-						throw ctx.redirect(`${errorURL}?error=email_required`);
-					}
+					const finalEmail = email || `${steamId}@steam.invalid`;
 
-					const isValidEmail = z.string().email().safeParse(email);
+					const isValidEmail = z.string().email().safeParse(finalEmail);
 
 					// If no email, throw. We need this since Steam OAuth doesn't provide an email.
 					if (!isValidEmail.success) {
@@ -505,14 +501,14 @@ export const steam = (config: SteamAuthPluginOptions) =>
 						isNewUser = true;
 						const userDetails = await config.mapProfileToUser?.({
 							...profile,
-							email,
+							email: finalEmail,
 						});
 
 						user = await ctx.context.internalAdapter.createUser({
 							...(userDetails || {}),
 							name: userDetails?.name || profile.realname || "Unknown",
-							email: userDetails?.email || email,
-							emailVerified: userDetails?.emailVerified || false,
+							email: userDetails?.email || finalEmail,
+							emailVerified: userDetails?.emailVerified ?? true,
 							image: userDetails?.image || profile.avatarfull || "",
 						});
 						if (!user) {
